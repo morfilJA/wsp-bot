@@ -1,0 +1,31 @@
+2023/07/10-15:20:02.736 185c Reusing MANIFEST C:\Users\Juan\Music\py-node\wsp-bot\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2023/07/10-15:20:02.736 185c Recovering log #1577
+2023/07/10-15:20:02.739 185c Reusing old log C:\Users\Juan\Music\py-node\wsp-bot\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/001577.log 
+2023/07/10-15:20:03.677 2d10 Compacting 1@0 + 0@1 files
+2023/07/10-15:20:03.705 2d10 Generated table #1580@0: 22542 keys, 205619 bytes
+2023/07/10-15:20:03.722 2d10 Generated table #1581@0: 15031 keys, 411049 bytes
+2023/07/10-15:20:03.722 2d10 Compacted 1@0 + 0@1 files => 616668 bytes
+2023/07/10-15:20:03.722 2d10 compacted to: files[ 0 2 14 0 0 0 0 ]
+2023/07/10-15:20:03.723 2d10 Delete type=2 #1578
+2023/07/10-15:20:13.447 2544 Compacting 1@1 + 9@2 files
+2023/07/10-15:20:13.531 2544 Generated table #1582@1: 38459 keys, 2209755 bytes
+2023/07/10-15:20:13.571 2544 Generated table #1583@1: 2431 keys, 2153303 bytes
+2023/07/10-15:20:13.606 2544 Generated table #1584@1: 3048 keys, 2161385 bytes
+2023/07/10-15:20:13.639 2544 Generated table #1585@1: 3390 keys, 2163912 bytes
+2023/07/10-15:20:13.678 2544 Generated table #1586@1: 3442 keys, 2159025 bytes
+2023/07/10-15:20:13.718 2544 Generated table #1587@1: 5949 keys, 2165473 bytes
+2023/07/10-15:20:13.781 2544 Generated table #1588@1: 31826 keys, 2251494 bytes
+2023/07/10-15:20:13.843 2544 Generated table #1589@1: 26269 keys, 2266190 bytes
+2023/07/10-15:20:13.927 2544 Generated table #1590@1: 32533 keys, 2222593 bytes
+2023/07/10-15:20:13.927 2544 Compacted 1@1 + 9@2 files => 19753130 bytes
+2023/07/10-15:20:13.928 2544 compacted to: files[ 0 1 14 0 0 0 0 ]
+2023/07/10-15:20:13.928 2544 Delete type=2 #1568
+2023/07/10-15:20:13.928 2544 Delete type=2 #1569
+2023/07/10-15:20:13.928 2544 Delete type=2 #1570
+2023/07/10-15:20:13.928 2544 Delete type=2 #1571
+2023/07/10-15:20:13.928 2544 Delete type=2 #1572
+2023/07/10-15:20:13.928 2544 Delete type=2 #1573
+2023/07/10-15:20:13.928 2544 Delete type=2 #1574
+2023/07/10-15:20:13.928 2544 Delete type=2 #1575
+2023/07/10-15:20:13.928 2544 Delete type=2 #1576
+2023/07/10-15:20:13.928 2544 Delete type=2 #1580
