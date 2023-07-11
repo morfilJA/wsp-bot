@@ -10,6 +10,10 @@
             {"texto": "Ir a Google", "url": "https://www.google.com"},
             {"texto": "Ir a YouTube", "url": "https://www.youtube.com"}
         ]
+    },
+    {
+        "clave": "juan",
+        "respuesta": "saludos"
     }
 ]
 
