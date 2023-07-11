@@ -1,8 +1,6 @@
-[0711/111509.921:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ambient-light-sensor'.", source:  (0)
-[0711/111509.921:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'bluetooth'.", source:  (0)
-[0711/111509.926:WARNING:backend_impl.cc(1826)] Destroying invalid entry.
-[0711/111509.928:WARNING:backend_impl.cc(1826)] Destroying invalid entry.
-[0711/111509.928:WARNING:backend_impl.cc(1826)] Destroying invalid entry.
-[0711/111510.863:INFO:CONSOLE(7)] "Another connection wants to delete database 'wawc'. Closing db now to resume the delete request.", source: https://web.whatsapp.com/vendor1~app.a91035d81a749b3d5627.js (7)
-[0711/111522.110:INFO:CONSOLE(43)] "Uncaught (in promise) TypeError: Failed to execute 'put' on 'Cache': Partial response (status code 206) is unsupported", source: https://web.whatsapp.com/serviceworker.js (43)
-[0711/111522.112:INFO:CONSOLE(43)] "Uncaught (in promise) TypeError: Failed to execute 'put' on 'Cache': Partial response (status code 206) is unsupported", source: https://web.whatsapp.com/serviceworker.js (43)
+[0711/124254.574:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ambient-light-sensor'.", source:  (0)
+[0711/124254.574:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'bluetooth'.", source:  (0)
+[0711/124305.807:INFO:CONSOLE(43)] "Uncaught (in promise) TypeError: Failed to execute 'put' on 'Cache': Partial response (status code 206) is unsupported", source: https://web.whatsapp.com/serviceworker.js (43)
+[0711/124305.812:INFO:CONSOLE(43)] "Uncaught (in promise) TypeError: Failed to execute 'put' on 'Cache': Partial response (status code 206) is unsupported", source: https://web.whatsapp.com/serviceworker.js (43)
+[0711/124318.856:INFO:CONSOLE(47)] "Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'aliceBaseKey')", source: https://web.whatsapp.com/app.c84a9214dcf0e06fb30b.js (47)
+[0711/124318.857:INFO:CONSOLE(47)] "Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'aliceBaseKey')", source: https://web.whatsapp.com/app.c84a9214dcf0e06fb30b.js (47)

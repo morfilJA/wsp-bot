@@ -10,6 +10,8 @@ const cors = require('cors');
 const path = require('path');
 const app = express();
 const respuestas = require('../src/config/msg.json');
+const natural = require('natural');
+const tokenizer = new natural.WordTokenizer();
 
 app.use(express.json());
 app.set("json spaces", 4);
@@ -20,7 +22,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 
-//
+
 const qrcode = require('qrcode-terminal');
 
 //Crea una sesión con whatsapp-web y la guarda localmente para autenticarse solo una vez por QR
@@ -36,7 +38,7 @@ client.on('qr', qr => {
 
 //Si la conexión es exitosa muestra el mensaje de conexión exitosa
 client.on('ready', () => {
-    console.log('Conexion exitosa nenes');
+    console.log('Conexion exitosa!!!');
 });
 
 
@@ -45,41 +47,47 @@ client.on('ready', () => {
 const opcionesUsuario = {};
 
 client.on('message', message => {
+  // Verificar si el mensaje proviene de un grupo
+  if (message.isGroupMsg) {
     // Convertir el texto del mensaje a minúsculas
     const mensajeEnMinusculas = message.body.toLowerCase();
     console.log(mensajeEnMinusculas);
 
-    // Verificar si el usuario eligió una opción
-    if (opcionesUsuario[message.from] && !isNaN(mensajeEnMinusculas)) {
-        const opcion = opcionesUsuario[message.from][parseInt(mensajeEnMinusculas) - 1];
-        if (opcion) {
-            client.sendMessage(message.from, opcion.url);
-            return;
-        }
-    }
-    
-    for (let i = 0; i < respuestas.length; i++) {
-        if (mensajeEnMinusculas === respuestas[i].clave.toLowerCase()) {
-            let respuesta = respuestas[i].respuesta;
-            
-            // Si existen opciones, añádelas a la respuesta y al registro de opciones del usuario
-            if (respuestas[i].opciones) {
-                respuesta += '\n';
-                for (let j = 0; j < respuestas[i].opciones.length; j++) {
-                    respuesta += `${j+1}. ${respuestas[i].opciones[j].texto}\n`;
-                }
-                opcionesUsuario[message.from] = respuestas[i].opciones;
-            }
+    // Tokenizar el mensaje en palabras individuales
+    const palabrasMensaje = tokenizer.tokenize(mensajeEnMinusculas);
 
-            client.sendMessage(message.from, respuesta);
-            break;
+    for (let i = 0; i < respuestas.length; i++) {
+      const claveRespuesta = respuestas[i].clave.toLowerCase();
+
+      // Verificar si alguna palabra clave coincide con alguna palabra del mensaje
+      const coincidencia = palabrasMensaje.some(palabra => claveRespuesta.includes(palabra));
+
+      if (coincidencia) {
+        let respuesta = respuestas[i].respuesta;
+
+        // Si existen opciones, añádelas a la respuesta y al registro de opciones del usuario
+        if (respuestas[i].opciones) {
+          respuesta += '\n';
+          for (let j = 0; j < respuestas[i].opciones.length; j++) {
+            respuesta += `${j + 1}. ${respuestas[i].opciones[j].texto}\n`;
+          }
+          opcionesUsuario[message.from] = respuestas[i].opciones;
         }
+
+        // Envío de respuesta después de un retraso de 3 segundos
+        setTimeout(() => {
+          client.sendMessage(message.from, respuesta);
+        }, 3000);
+        break;
+      }
     }
+  }
 });
+  
 
 
 client.initialize();
-//
+
 
 
 
