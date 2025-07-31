@@ -495,8 +495,8 @@ if (!fs.existsSync(carpetaPedidos)) {
 function esPedido(mensaje) {
     // Verificar que el mensaje empiece con "🔷 NUEVO PEDIDO" o "🍽️ NUEVO PEDIDO"
     const mensajeTrimmed = mensaje.trim();
-    return mensajeTrimmed.startsWith('🔷 NUEVO PEDIDO') || 
-           mensajeTrimmed.startsWith('🍽️ NUEVO PEDIDO');
+    return mensajeTrimmed.startsWith(' NUEVO PEDIDO') || 
+           mensajeTrimmed.startsWith(' NUEVO PEDIDO');
 }
 
 // Función para extraer información del pedido
@@ -505,10 +505,10 @@ function procesarPedido(mensaje, numeroRemitente) {
     const timestamp = fechaActual.toISOString();
     
     // Extraer información básica (actualizado para formato con 🔷)
-    const fechaMatch = mensaje.match(/🔷 Fecha: ([^\n]+)/) || mensaje.match(/📅 Fecha: ([^\n]+)/);
-    const horaMatch = mensaje.match(/🔷 Hora: ([^\n]+)/) || mensaje.match(/🕐 Hora: ([^\n]+)/);
+    const fechaMatch = mensaje.match(/ Fecha: ([^\n]+)/) || mensaje.match(/ Fecha: ([^\n]+)/);
+    const horaMatch = mensaje.match(/ Hora: ([^\n]+)/) || mensaje.match(/ Hora: ([^\n]+)/);
     const totalMatch = mensaje.match(/TOTAL: \$?([0-9,]+\.?[0-9]*)/);
-    const tipoEntregaMatch = mensaje.match(/🔷 TIPO DE ENTREGA:\s*([^\n]+)/) || mensaje.match(/🚚 TIPO DE ENTREGA:\s*([^\n]+)/);
+    const tipoEntregaMatch = mensaje.match(/ TIPO DE ENTREGA:\s*([^\n]+)/) || mensaje.match(/ TIPO DE ENTREGA:\s*([^\n]+)/);
     
     // Extraer productos (buscar líneas que empiecen con números)
     const productos = [];
@@ -611,8 +611,8 @@ const client = new Client({
 // Genera el código QR
 client.on('qr', qr => {
     console.log('\n' + '📖'.repeat(25));
-    console.log('📱 LECTOR DE PEDIDOS - ESCANEA QR:');
-    console.log('🔍 Solo lee mensajes, NO responde automáticamente');
+    console.log(' LECTOR DE PEDIDOS - ESCANEA QR:');
+    console.log(' Solo lee mensajes, NO responde automáticamente');
     console.log('📖'.repeat(25));
     qrcode.generate(qr, {small: true});
     console.log('📖'.repeat(25) + '\n');
@@ -620,10 +620,10 @@ client.on('qr', qr => {
 
 // Conexión exitosa
 client.on('ready', () => {
-    console.log('\n' + '✅'.repeat(40));
-    console.log('📖 LECTOR DE PEDIDOS CONECTADO');
-    console.log('🔍 Modo: SOLO LECTURA (sin respuestas automáticas)');
-    console.log('💾 Carpeta de guardado:', carpetaPedidos);
+    console.log('\n' .repeat(40));
+    console.log(' LECTOR DE PEDIDOS CONECTADO');
+    console.log(' Modo: SOLO LECTURA (sin respuestas automáticas)');
+    console.log(' Carpeta de guardado:', carpetaPedidos);
     console.log('✅'.repeat(40) + '\n');
 });
 
