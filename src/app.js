@@ -1,382 +1,8 @@
-// const express = require('express');
-// const cors = require('cors');
-// const path = require('path');
-// const app = express();
-// const respuestas = require('../src/config/msg.json');
-// const natural = require('natural');
-// const tokenizer = new natural.WordTokenizer();
-
-// app.use(express.json());
-// app.set("json spaces", 4);
-// const corsOptions = {
-//     origin: "*",
-//     optionsSuccessStatus: 200
-// };
-// app.use(cors(corsOptions));
-
-// const qrcode = require('qrcode-terminal');
-
-// //Crea una sesión con whatsapp-web y la guarda localmente para autenticarse solo una vez por QR
-// const { Client, LocalAuth } = require('whatsapp-web.js');
-// const client = new Client({
-//     authStrategy: new LocalAuth()
-// });
-
-// //Genera el código qr para conectarse a whatsapp-web
-// client.on('qr', qr => {
-//     qrcode.generate(qr, {small: true});
-// });
-
-// //Si la conexión es exitosa muestra el mensaje de conexión exitosa
-// client.on('ready', () => {
-//     console.log('Conexion exitosa!!!');
-// });
-
-// //Aquí sucede la magia, escucha los mensajes y aquí es donde se manipula lo que queremos que haga el bot
-// // Objeto para mantener un registro de las opciones del usuario
-// const opcionesUsuario = {};
-
-// client.on('message', message => {
-//   // Verificar si el mensaje proviene de un grupo
-//   if (message.isGroupMsg) {
-//     // Convertir el texto del mensaje a minúsculas
-//     const mensajeEnMinusculas = message.body.toLowerCase();
-//     console.log(mensajeEnMinusculas);
-
-//     // Tokenizar el mensaje en palabras individuales
-//     const palabrasMensaje = tokenizer.tokenize(mensajeEnMinusculas);
-
-//     for (let i = 0; i < respuestas.length; i++) {
-//       const claveRespuesta = respuestas[i].clave.toLowerCase();
-
-//       // Verificar si alguna palabra clave coincide con alguna palabra del mensaje
-//       const coincidencia = palabrasMensaje.some(palabra => claveRespuesta.includes(palabra));
-
-//       if (coincidencia) {
-//         let respuesta = respuestas[i].respuesta;
-
-//         // Si existen opciones, añádelas a la respuesta y al registro de opciones del usuario
-//         if (respuestas[i].opciones) {
-//           respuesta += '\n';
-//           for (let j = 0; j < respuestas[i].opciones.length; j++) {
-//             respuesta += `${j + 1}. ${respuestas[i].opciones[j].texto}\n`;
-//           }
-//           opcionesUsuario[message.from] = respuestas[i].opciones;
-//         }
-
-//         // Envío de respuesta después de un retraso de 3 segundos
-//         setTimeout(() => {
-//           client.sendMessage(message.from, respuesta);
-//         }, 3000);
-//         break;
-//       }
-//     }
-//   }
-// });
-
-// client.initialize();
-
-// module.exports = app;
-
-//----------------------------------------------------------------- solo grupos
-
-// const express = require('express');
-// const cors = require('cors');
-// const path = require('path');
-// const app = express();
-// const respuestas = require('../src/config/msg.json');
-// const natural = require('natural');
-// const tokenizer = new natural.WordTokenizer();
-
-// app.use(express.json());
-// app.set("json spaces", 4);
-// const corsOptions = {
-//     origin: "*",
-//     optionsSuccessStatus: 200
-// };
-// app.use(cors(corsOptions));
-
-// const qrcode = require('qrcode-terminal');
-
-// //Crea una sesión con whatsapp-web y la guarda localmente para autenticarse solo una vez por QR
-// const { Client, LocalAuth } = require('whatsapp-web.js');
-// const client = new Client({
-//     authStrategy: new LocalAuth({
-//         dataPath: './wwebjs_auth'
-//     }),
-//     puppeteer: {
-//         headless: true,
-//         args: [
-//             '--no-sandbox',
-//             '--disable-setuid-sandbox',
-//             '--disable-dev-shm-usage',
-//             '--disable-accelerated-2d-canvas',
-//             '--no-first-run',
-//             '--no-zygote',
-//             '--single-process',
-//             '--disable-gpu'
-//         ]
-//     }
-// });
-
-// //Genera el código qr para conectarse a whatsapp-web
-// client.on('qr', qr => {
-//     console.log('\n' + '='.repeat(50));
-//     console.log('🚀 ESCANEA ESTE CÓDIGO QR CON TU TELÉFONO:');
-//     console.log('='.repeat(50));
-//     qrcode.generate(qr, {small: true});
-//     console.log('='.repeat(50));
-//     console.log('📱 Abre WhatsApp > Dispositivos vinculados > Vincular dispositivo');
-//     console.log('⏳ Una vez escaneado, verás "Conexión exitosa" aquí');
-//     console.log('='.repeat(50) + '\n');
-// });
-
-// //Si la conexión es exitosa muestra el mensaje de conexión exitosa
-// client.on('ready', () => {
-//     console.log('\n' + '🎉'.repeat(20));
-//     console.log('✅ ¡CONEXIÓN EXITOSA CON WHATSAPP!');
-//     console.log('🤖 El bot está listo para recibir mensajes');
-//     console.log('🎉'.repeat(20) + '\n');
-// });
-
-// // Manejo de errores adicionales
-// client.on('auth_failure', msg => {
-//     console.error('❌ Error de autenticación:', msg);
-//     console.log('💡 Intenta eliminar la carpeta .wwebjs_auth y volver a escanear el QR');
-// });
-
-// client.on('disconnected', (reason) => {
-//     console.log('⚠️ Cliente desconectado:', reason);
-//     console.log('🔄 Intentando reconectar...');
-// });
-
-// //Aquí sucede la magia, escucha los mensajes y aquí es donde se manipula lo que queremos que haga el bot
-// // Objeto para mantener un registro de las opciones del usuario
-// const opcionesUsuario = {};
-
-// client.on('message', message => {
-//   // Verificar si el mensaje proviene de un grupo
-//   if (message.isGroupMsg) {
-//     // Convertir el texto del mensaje a minúsculas
-//     const mensajeEnMinusculas = message.body.toLowerCase();
-//     console.log('📨 Mensaje recibido:', mensajeEnMinusculas);
-
-//     // Tokenizar el mensaje en palabras individuales
-//     const palabrasMensaje = tokenizer.tokenize(mensajeEnMinusculas);
-
-//     for (let i = 0; i < respuestas.length; i++) {
-//       const claveRespuesta = respuestas[i].clave.toLowerCase();
-
-//       // Verificar si alguna palabra clave coincide con alguna palabra del mensaje
-//       const coincidencia = palabrasMensaje.some(palabra => claveRespuesta.includes(palabra));
-
-//       if (coincidencia) {
-//         let respuesta = respuestas[i].respuesta;
-
-//         // Si existen opciones, añádelas a la respuesta y al registro de opciones del usuario
-//         if (respuestas[i].opciones) {
-//           respuesta += '\n';
-//           for (let j = 0; j < respuestas[i].opciones.length; j++) {
-//             respuesta += `${j + 1}. ${respuestas[i].opciones[j].texto}\n`;
-//           }
-//           opcionesUsuario[message.from] = respuestas[i].opciones;
-//         }
-
-//         console.log('🤖 Enviando respuesta:', respuesta.substring(0, 50) + '...');
-
-//         // Envío de respuesta después de un retraso de 3 segundos
-//         setTimeout(() => {
-//           client.sendMessage(message.from, respuesta)
-//             .then(() => {
-//               console.log('✅ Mensaje enviado correctamente');
-//             })
-//             .catch(err => {
-//               console.error('❌ Error al enviar mensaje:', err);
-//             });
-//         }, 3000);
-//         break;
-//       }
-//     }
-//   }
-// });
-
-// // Inicializar el cliente con manejo de errores
-// client.initialize()
-//   .then(() => {
-//     console.log('🔄 Cliente inicializado, esperando conexión...');
-//   })
-//   .catch(err => {
-//     console.error('❌ Error al inicializar cliente:', err);
-//   });
-
-// module.exports = app;
-
-//-------------------- grupos e individual
-// const express = require('express');
-// const cors = require('cors');
-// const path = require('path');
-// const app = express();
-// const respuestas = require('../src/config/msg.json');
-// const natural = require('natural');
-// const tokenizer = new natural.WordTokenizer();
-
-// app.use(express.json());
-// app.set("json spaces", 4);
-// const corsOptions = {
-//     origin: "*",
-//     optionsSuccessStatus: 200
-// };
-// app.use(cors(corsOptions));
-
-// const qrcode = require('qrcode-terminal');
-
-// //Crea una sesión con whatsapp-web y la guarda localmente para autenticarse solo una vez por QR
-// const { Client, LocalAuth } = require('whatsapp-web.js');
-// const client = new Client({
-//     authStrategy: new LocalAuth({
-//         dataPath: './wwebjs_auth'
-//     }),
-//     puppeteer: {
-//         headless: true,
-//         args: [
-//             '--no-sandbox',
-//             '--disable-setuid-sandbox',
-//             '--disable-dev-shm-usage',
-//             '--disable-accelerated-2d-canvas',
-//             '--no-first-run',
-//             '--no-zygote',
-//             '--single-process',
-//             '--disable-gpu'
-//         ]
-//     }
-// });
-
-// //Genera el código qr para conectarse a whatsapp-web
-// client.on('qr', qr => {
-//     console.log('\n' + '='.repeat(50));
-//     console.log('🚀 ESCANEA ESTE CÓDIGO QR CON TU TELÉFONO:');
-//     console.log('='.repeat(50));
-//     qrcode.generate(qr, {small: true});
-//     console.log('='.repeat(50));
-//     console.log('📱 Abre WhatsApp > Dispositivos vinculados > Vincular dispositivo');
-//     console.log('⏳ Una vez escaneado, verás "Conexión exitosa" aquí');
-//     console.log('='.repeat(50) + '\n');
-// });
-
-// //Si la conexión es exitosa muestra el mensaje de conexión exitosa
-// client.on('ready', () => {
-//     console.log('\n' + '🎉'.repeat(20));
-//     console.log('✅ ¡CONEXIÓN EXITOSA CON WHATSAPP!');
-//     console.log('🤖 El bot está listo para recibir mensajes');
-//     console.log('🎉'.repeat(20) + '\n');
-// });
-
-// // Manejo de errores adicionales
-// client.on('auth_failure', msg => {
-//     console.error('❌ Error de autenticación:', msg);
-//     console.log('💡 Intenta eliminar la carpeta .wwebjs_auth y volver a escanear el QR');
-// });
-
-// client.on('disconnected', (reason) => {
-//     console.log('⚠️ Cliente desconectado:', reason);
-//     console.log('🔄 Intentando reconectar...');
-// });
-
-// // Objeto para mantener un registro de las opciones del usuario
-// const opcionesUsuario = {};
-
-// client.on('message', message => {
-//     // DEBUG: Mostrar información del mensaje
-//     console.log('\n' + '🔍'.repeat(30));
-//     console.log('📩 MENSAJE RECIBIDO:');
-//     console.log('💬 Contenido:', message.body);
-//     console.log('👤 De:', message.from);
-//     console.log('📍 Es grupo:', message.isGroupMsg);
-//     console.log('🤖 Es del bot:', message.fromMe);
-//     console.log('🔍'.repeat(30));
-
-//     // Ignorar mensajes enviados por el bot mismo
-//     if (message.fromMe) {
-//         console.log('⏭️ Ignorando mensaje propio del bot');
-//         return;
-//     }
-
-//     // CAMBIO: Responder tanto en grupos como en chats individuales
-//     // Cambia esta línea si solo quieres grupos: if (message.isGroupMsg) {
-//     if (message.body && message.body.trim() !== '') {
-//         // Convertir el texto del mensaje a minúsculas
-//         const mensajeEnMinusculas = message.body.toLowerCase().trim();
-//         console.log('🔤 Mensaje procesado:', mensajeEnMinusculas);
-
-//         // Tokenizar el mensaje en palabras individuales
-//         const palabrasMensaje = tokenizer.tokenize(mensajeEnMinusculas);
-//         console.log('🔤 Palabras encontradas:', palabrasMensaje);
-
-//         let respuestaEncontrada = false;
-
-//         for (let i = 0; i < respuestas.length; i++) {
-//             const claveRespuesta = respuestas[i].clave.toLowerCase();
-//             console.log(`🔍 Comparando con clave: "${claveRespuesta}"`);
-
-//             // Verificar si alguna palabra clave coincide con alguna palabra del mensaje
-//             const coincidencia = palabrasMensaje.some(palabra => claveRespuesta.includes(palabra));
-            
-//             if (coincidencia) {
-//                 console.log(`✅ ¡COINCIDENCIA ENCONTRADA con: "${claveRespuesta}"!`);
-//                 let respuesta = respuestas[i].respuesta;
-
-//                 // Si existen opciones, añádelas a la respuesta y al registro de opciones del usuario
-//                 if (respuestas[i].opciones) {
-//                     respuesta += '\n';
-//                     for (let j = 0; j < respuestas[i].opciones.length; j++) {
-//                         respuesta += `${j + 1}. ${respuestas[i].opciones[j].texto}\n`;
-//                     }
-//                     opcionesUsuario[message.from] = respuestas[i].opciones;
-//                 }
-
-//                 console.log('🤖 Preparando respuesta:', respuesta);
-
-//                 // Envío de respuesta después de un retraso de 3 segundos
-//                 setTimeout(() => {
-//                     client.sendMessage(message.from, respuesta)
-//                         .then(() => {
-//                             console.log('✅ ¡Mensaje enviado correctamente!');
-//                         })
-//                         .catch(err => {
-//                             console.error('❌ Error al enviar mensaje:', err);
-//                         });
-//                 }, 3000);
-                
-//                 respuestaEncontrada = true;
-//                 break;
-//             }
-//         }
-
-//         if (!respuestaEncontrada) {
-//             console.log('❌ No se encontró ninguna coincidencia para el mensaje');
-//         }
-//     }
-// });
-
-// // Inicializar el cliente con manejo de errores
-// client.initialize()
-//     .then(() => {
-//         console.log('🔄 Cliente inicializado, esperando conexión...');
-//     })
-//     .catch(err => {
-//         console.error('❌ Error al inicializar cliente:', err);
-//     });
-
-// module.exports = app;
-
-//---------------------solo mi numero
 const express = require('express');
 const cors = require('cors');
+const fs = require('fs');
 const path = require('path');
 const app = express();
-const respuestas = require('../src/config/msg.json');
-const natural = require('natural');
-const tokenizer = new natural.WordTokenizer();
 
 app.use(express.json());
 app.set("json spaces", 4);
@@ -388,7 +14,119 @@ app.use(cors(corsOptions));
 
 const qrcode = require('qrcode-terminal');
 
-//Crea una sesión con whatsapp-web y la guarda localmente para autenticarse solo una vez por QR
+// Crear carpeta para guardar pedidos si no existe
+const carpetaPedidos = './pedidos_procesados';
+if (!fs.existsSync(carpetaPedidos)) {
+    fs.mkdirSync(carpetaPedidos);
+    console.log('📁 Carpeta de pedidos creada');
+}
+
+// Función para detectar si es un pedido
+function esPedido(mensaje) {
+    const indicadoresPedido = [
+        '🍽️ NUEVO PEDIDO',
+        'NUEVO PEDIDO',
+        'GastroSoft',
+        'DETALLE DEL PEDIDO',
+        'RESUMEN:',
+        'TOTAL:',
+        'TIPO DE ENTREGA'
+    ];
+    
+    return indicadoresPedido.some(indicador => 
+        mensaje.toUpperCase().includes(indicador.toUpperCase())
+    );
+}
+
+// Función para extraer información del pedido
+function procesarPedido(mensaje, numeroRemitente) {
+    const fechaActual = new Date();
+    const timestamp = fechaActual.toISOString();
+    
+    // Extraer información básica
+    const fechaMatch = mensaje.match(/📅 Fecha: ([^\n]+)/);
+    const horaMatch = mensaje.match(/🕐 Hora: ([^\n]+)/);
+    const totalMatch = mensaje.match(/TOTAL: \$?([0-9,]+\.?[0-9]*)/);
+    const tipoEntregaMatch = mensaje.match(/🚚 TIPO DE ENTREGA:\s*([^\n]+)/);
+    
+    // Extraer productos (buscar líneas que empiecen con números)
+    const productos = [];
+    const lineas = mensaje.split('\n');
+    let enSeccionProductos = false;
+    
+    for (let i = 0; i < lineas.length; i++) {
+        const linea = lineas[i].trim();
+        
+        if (linea.includes('DETALLE DEL PEDIDO')) {
+            enSeccionProductos = true;
+            continue;
+        }
+        
+        if (linea.includes('RESUMEN:') || linea.includes('💰')) {
+            enSeccionProductos = false;
+            continue;
+        }
+        
+        if (enSeccionProductos && /^\d+\./.test(linea)) {
+            // Es un producto (empieza con número y punto)
+            const producto = {
+                nombre: linea.replace(/^\d+\.\s*/, ''),
+                cantidad: null,
+                precio: null,
+                subtotal: null
+            };
+            
+            // Buscar cantidad, precio y subtotal en las siguientes líneas
+            for (let j = i + 1; j < Math.min(i + 4, lineas.length); j++) {
+                const siguienteLinea = lineas[j].trim();
+                
+                if (siguienteLinea.includes('Cantidad:')) {
+                    producto.cantidad = siguienteLinea.replace('Cantidad:', '').trim();
+                }
+                if (siguienteLinea.includes('Precio unitario:')) {
+                    producto.precio = siguienteLinea.replace('Precio unitario:', '').trim();
+                }
+                if (siguienteLinea.includes('Subtotal:')) {
+                    producto.subtotal = siguienteLinea.replace('Subtotal:', '').trim();
+                }
+            }
+            
+            productos.push(producto);
+        }
+    }
+    
+    const pedidoProcesado = {
+        timestamp: timestamp,
+        fechaRecepcion: fechaActual.toLocaleString('es-AR'),
+        numeroRemitente: numeroRemitente,
+        fechaPedido: fechaMatch ? fechaMatch[1] : 'No encontrada',
+        horaPedido: horaMatch ? horaMatch[1] : 'No encontrada',
+        productos: productos,
+        total: totalMatch ? totalMatch[1] : 'No encontrado',
+        tipoEntrega: tipoEntregaMatch ? tipoEntregaMatch[1] : 'No especificado',
+        mensajeOriginal: mensaje
+    };
+    
+    return pedidoProcesado;
+}
+
+// Función para guardar pedido en archivo
+function guardarPedido(pedido) {
+    const fecha = new Date();
+    const nombreArchivo = `pedido_${fecha.getFullYear()}-${(fecha.getMonth()+1).toString().padStart(2,'0')}-${fecha.getDate().toString().padStart(2,'0')}_${fecha.getHours().toString().padStart(2,'0')}-${fecha.getMinutes().toString().padStart(2,'0')}-${fecha.getSeconds().toString().padStart(2,'0')}.json`;
+    
+    const rutaArchivo = path.join(carpetaPedidos, nombreArchivo);
+    
+    try {
+        fs.writeFileSync(rutaArchivo, JSON.stringify(pedido, null, 2), 'utf8');
+        console.log(`💾 Pedido guardado en: ${nombreArchivo}`);
+        return true;
+    } catch (error) {
+        console.error('❌ Error al guardar pedido:', error);
+        return false;
+    }
+}
+
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const client = new Client({
     authStrategy: new LocalAuth({
@@ -409,451 +147,94 @@ const client = new Client({
     }
 });
 
-//Genera el código qr para conectarse a whatsapp-web
+// Genera el código QR
 client.on('qr', qr => {
-    console.log('\n' + '='.repeat(50));
-    console.log('🚀 ESCANEA ESTE CÓDIGO QR CON TU TELÉFONO:');
-    console.log('='.repeat(50));
+    console.log('\n' + '📖'.repeat(25));
+    console.log('📱 LECTOR DE PEDIDOS - ESCANEA QR:');
+    console.log('🔍 Solo lee mensajes, NO responde automáticamente');
+    console.log('📖'.repeat(25));
     qrcode.generate(qr, {small: true});
-    console.log('='.repeat(50));
-    console.log('📱 Abre WhatsApp > Dispositivos vinculados > Vincular dispositivo');
-    console.log('⏳ Una vez escaneado, verás "Conexión exitosa" aquí');
-    console.log('='.repeat(50) + '\n');
+    console.log('📖'.repeat(25) + '\n');
 });
 
-//Si la conexión es exitosa muestra el mensaje de conexión exitosa
+// Conexión exitosa
 client.on('ready', () => {
-    console.log('\n' + '🎉'.repeat(20));
-    console.log('✅ ¡CONEXIÓN EXITOSA CON WHATSAPP!');
-    console.log('🤖 El bot está listo para recibir mensajes');
-    console.log('🎉'.repeat(20) + '\n');
+    console.log('\n' + '✅'.repeat(40));
+    console.log('📖 LECTOR DE PEDIDOS CONECTADO');
+    console.log('🔍 Modo: SOLO LECTURA (sin respuestas automáticas)');
+    console.log('💾 Carpeta de guardado:', carpetaPedidos);
+    console.log('✅'.repeat(40) + '\n');
 });
 
-// Manejo de errores adicionales
+// Manejo de errores
 client.on('auth_failure', msg => {
     console.error('❌ Error de autenticación:', msg);
-    console.log('💡 Intenta eliminar la carpeta .wwebjs_auth y volver a escanear el QR');
 });
 
 client.on('disconnected', (reason) => {
     console.log('⚠️ Cliente desconectado:', reason);
-    console.log('🔄 Intentando reconectar...');
 });
 
-// Objeto para mantener un registro de las opciones del usuario
-const opcionesUsuario = {};
-
+// SOLO LEER mensajes - NO responder
 client.on('message', message => {
-    // DEBUG: Mostrar información del mensaje
-    console.log('\n' + '🔍'.repeat(30));
-    console.log('📩 MENSAJE RECIBIDO:');
-    console.log('💬 Contenido:', message.body);
-    console.log('👤 De:', message.from);
-    console.log('📍 Es grupo:', message.isGroupMsg);
-    console.log('🤖 Es del bot:', message.fromMe);
-    console.log('🔍'.repeat(30));
-
-    // Ignorar mensajes enviados por el bot mismo
+    // Ignorar mensajes propios
     if (message.fromMe) {
-        console.log('⏭️ Ignorando mensaje propio del bot');
         return;
     }
 
-    // SOLO responder a mensajes DIRECTOS (NO grupos)
-    if (!message.isGroupMsg && message.body && message.body.trim() !== '') {
-        console.log('💬 Procesando mensaje directo (no es grupo)');
+    const numeroRemitente = message.from;
+    const contenido = message.body;
+    
+    // Log básico de todos los mensajes
+    console.log('\n' + '📩'.repeat(20));
+    console.log('📱 Mensaje recibido de:', numeroRemitente);
+    console.log('🕐 Hora:', new Date().toLocaleString('es-AR'));
+    
+    // Verificar si es un pedido
+    if (esPedido(contenido)) {
+        console.log('🍽️ ¡PEDIDO DETECTADO!');
+        console.log('📩'.repeat(20));
         
-        // Convertir el texto del mensaje a minúsculas
-        const mensajeEnMinusculas = message.body.toLowerCase().trim();
-        console.log('🔤 Mensaje procesado:', mensajeEnMinusculas);
-
-        // Tokenizar el mensaje en palabras individuales
-        const palabrasMensaje = tokenizer.tokenize(mensajeEnMinusculas);
-        console.log('🔤 Palabras encontradas:', palabrasMensaje);
-
-        let respuestaEncontrada = false;
-
-        for (let i = 0; i < respuestas.length; i++) {
-            const claveRespuesta = respuestas[i].clave.toLowerCase();
-            console.log(`🔍 Comparando con clave: "${claveRespuesta}"`);
-
-            // Verificar si alguna palabra clave coincide con alguna palabra del mensaje
-            const coincidencia = palabrasMensaje.some(palabra => claveRespuesta.includes(palabra));
-            
-            if (coincidencia) {
-                console.log(`✅ ¡COINCIDENCIA ENCONTRADA con: "${claveRespuesta}"!`);
-                let respuesta = respuestas[i].respuesta;
-
-                // Si existen opciones, añádelas a la respuesta y al registro de opciones del usuario
-                if (respuestas[i].opciones) {
-                    respuesta += '\n';
-                    for (let j = 0; j < respuestas[i].opciones.length; j++) {
-                        respuesta += `${j + 1}. ${respuestas[i].opciones[j].texto}\n`;
-                    }
-                    opcionesUsuario[message.from] = respuestas[i].opciones;
-                }
-
-                console.log('🤖 Preparando respuesta:', respuesta);
-
-                // Envío de respuesta después de un retraso de 3 segundos
-                setTimeout(() => {
-                    client.sendMessage(message.from, respuesta)
-                        .then(() => {
-                            console.log('✅ ¡Mensaje enviado correctamente!');
-                        })
-                        .catch(err => {
-                            console.error('❌ Error al enviar mensaje:', err);
-                        });
-                }, 3000);
-                
-                respuestaEncontrada = true;
-                break;
-            }
+        // Procesar el pedido
+        const pedidoProcesado = procesarPedido(contenido, numeroRemitente);
+        
+        // Mostrar información del pedido en consola
+        console.log('\n' + '🍽️'.repeat(30));
+        console.log('📋 INFORMACIÓN DEL PEDIDO:');
+        console.log('🕐 Fecha/Hora:', pedidoProcesado.fechaPedido, pedidoProcesado.horaPedido);
+        console.log('👤 Cliente:', numeroRemitente);
+        console.log('💰 Total:', pedidoProcesado.total);
+        console.log('🚚 Entrega:', pedidoProcesado.tipoEntrega);
+        
+        console.log('\n🛒 PRODUCTOS:');
+        pedidoProcesado.productos.forEach((producto, index) => {
+            console.log(`${index + 1}. ${producto.nombre}`);
+            if (producto.cantidad) console.log(`   Cantidad: ${producto.cantidad}`);
+            if (producto.precio) console.log(`   Precio: ${producto.precio}`);
+            if (producto.subtotal) console.log(`   Subtotal: ${producto.subtotal}`);
+        });
+        
+        console.log('🍽️'.repeat(30) + '\n');
+        
+        // Guardar pedido en archivo
+        if (guardarPedido(pedidoProcesado)) {
+            console.log('✅ Pedido procesado y guardado exitosamente');
         }
-
-        if (!respuestaEncontrada) {
-            console.log('❌ No se encontró ninguna coincidencia para el mensaje');
-        }
-    } else if (message.isGroupMsg) {
-        console.log('⏭️ Ignorando mensaje de grupo');
+        
+    } else {
+        console.log('💬 Mensaje normal (no es pedido)');
+        console.log('📝 Vista previa:', contenido.substring(0, 50) + '...');
+        console.log('📩'.repeat(20));
     }
 });
 
-// Inicializar el cliente con manejo de errores
+// Inicializar cliente
 client.initialize()
     .then(() => {
-        console.log('🔄 Cliente inicializado, esperando conexión...');
+        console.log('🔄 Lector de pedidos inicializado...');
     })
     .catch(err => {
-        console.error('❌ Error al inicializar cliente:', err);
+        console.error('❌ Error al inicializar:', err);
     });
 
 module.exports = app;
-
-//-----------------modo testing me permite enviarme mensajes yo mismo
-
-// const express = require('express');
-// const cors = require('cors');
-// const path = require('path');
-// const app = express();
-// const respuestas = require('../src/config/msg.json');
-// const natural = require('natural');
-// const tokenizer = new natural.WordTokenizer();
-
-// app.use(express.json());
-// app.set("json spaces", 4);
-// const corsOptions = {
-//     origin: "*",
-//     optionsSuccessStatus: 200
-// };
-// app.use(cors(corsOptions));
-
-// const qrcode = require('qrcode-terminal');
-
-// //Crea una sesión con whatsapp-web y la guarda localmente para autenticarse solo una vez por QR
-// const { Client, LocalAuth } = require('whatsapp-web.js');
-// const client = new Client({
-//     authStrategy: new LocalAuth({
-//         dataPath: './wwebjs_auth'
-//     }),
-//     puppeteer: {
-//         headless: true,
-//         args: [
-//             '--no-sandbox',
-//             '--disable-setuid-sandbox',
-//             '--disable-dev-shm-usage',
-//             '--disable-accelerated-2d-canvas',
-//             '--no-first-run',
-//             '--no-zygote',
-//             '--single-process',
-//             '--disable-gpu'
-//         ]
-//     }
-// });
-
-// //Genera el código qr para conectarse a whatsapp-web
-// client.on('qr', qr => {
-//     console.log('\n' + '='.repeat(50));
-//     console.log('🚀 ESCANEA ESTE CÓDIGO QR CON TU TELÉFONO:');
-//     console.log('='.repeat(50));
-//     qrcode.generate(qr, {small: true});
-//     console.log('='.repeat(50));
-//     console.log('📱 Abre WhatsApp > Dispositivos vinculados > Vincular dispositivo');
-//     console.log('⏳ Una vez escaneado, verás "Conexión exitosa" aquí');
-//     console.log('='.repeat(50) + '\n');
-// });
-
-// //Si la conexión es exitosa muestra el mensaje de conexión exitosa
-// client.on('ready', () => {
-//     console.log('\n' + '🎉'.repeat(20));
-//     console.log('✅ ¡CONEXIÓN EXITOSA CON WHATSAPP!');
-//     console.log('🤖 El bot está listo para recibir mensajes');
-//     console.log('🎉'.repeat(20) + '\n');
-// });
-
-// // Manejo de errores adicionales
-// client.on('auth_failure', msg => {
-//     console.error('❌ Error de autenticación:', msg);
-//     console.log('💡 Intenta eliminar la carpeta .wwebjs_auth y volver a escanear el QR');
-// });
-
-// client.on('disconnected', (reason) => {
-//     console.log('⚠️ Cliente desconectado:', reason);
-//     console.log('🔄 Intentando reconectar...');
-// });
-
-// // Objeto para mantener un registro de las opciones del usuario
-// const opcionesUsuario = {};
-
-// client.on('message', message => {
-//     // DEBUG: Mostrar información del mensaje
-//     console.log('\n' + '🔍'.repeat(30));
-//     console.log('📩 MENSAJE RECIBIDO:');
-//     console.log('💬 Contenido:', message.body);
-//     console.log('👤 De:', message.from);
-//     console.log('📍 Es grupo:', message.isGroupMsg);
-//     console.log('🤖 Es del bot:', message.fromMe);
-//     console.log('🔍'.repeat(30));
-
-//     // ⚠️ COMENTADO PARA TESTING - Ignorar mensajes enviados por el bot mismo
-//     // IMPORTANTE: Descomenta esto cuando termines las pruebas para evitar loops infinitos
-//     // if (message.fromMe) {
-//     //     console.log('⏭️ Ignorando mensaje propio del bot');
-//     //     return;
-//     // }
-
-//     // SOLO responder a mensajes DIRECTOS (NO grupos)
-//     if (!message.isGroupMsg && message.body && message.body.trim() !== '') {
-//         console.log('💬 Procesando mensaje directo (no es grupo)');
-        
-//         // Convertir el texto del mensaje a minúsculas
-//         const mensajeEnMinusculas = message.body.toLowerCase().trim();
-//         console.log('🔤 Mensaje procesado:', mensajeEnMinusculas);
-
-//         // Tokenizar el mensaje en palabras individuales
-//         const palabrasMensaje = tokenizer.tokenize(mensajeEnMinusculas);
-//         console.log('🔤 Palabras encontradas:', palabrasMensaje);
-
-//         let respuestaEncontrada = false;
-
-//         for (let i = 0; i < respuestas.length; i++) {
-//             const claveRespuesta = respuestas[i].clave.toLowerCase();
-//             console.log(`🔍 Comparando con clave: "${claveRespuesta}"`);
-
-//             // Verificar si alguna palabra clave coincide con alguna palabra del mensaje
-//             const coincidencia = palabrasMensaje.some(palabra => claveRespuesta.includes(palabra));
-            
-//             if (coincidencia) {
-//                 console.log(`✅ ¡COINCIDENCIA ENCONTRADA con: "${claveRespuesta}"!`);
-//                 let respuesta = respuestas[i].respuesta;
-
-//                 // Si existen opciones, añádelas a la respuesta y al registro de opciones del usuario
-//                 if (respuestas[i].opciones) {
-//                     respuesta += '\n';
-//                     for (let j = 0; j < respuestas[i].opciones.length; j++) {
-//                         respuesta += `${j + 1}. ${respuestas[i].opciones[j].texto}\n`;
-//                     }
-//                     opcionesUsuario[message.from] = respuestas[i].opciones;
-//                 }
-
-//                 console.log('🤖 Preparando respuesta:', respuesta);
-
-//                 // Envío de respuesta después de un retraso de 3 segundos
-//                 setTimeout(() => {
-//                     client.sendMessage(message.from, respuesta)
-//                         .then(() => {
-//                             console.log('✅ ¡Mensaje enviado correctamente!');
-//                         })
-//                         .catch(err => {
-//                             console.error('❌ Error al enviar mensaje:', err);
-//                         });
-//                 }, 3000);
-                
-//                 respuestaEncontrada = true;
-//                 break;
-//             }
-//         }
-
-//         if (!respuestaEncontrada) {
-//             console.log('❌ No se encontró ninguna coincidencia para el mensaje');
-//         }
-//     } else if (message.isGroupMsg) {
-//         console.log('⏭️ Ignorando mensaje de grupo');
-//     }
-// });
-
-// // Inicializar el cliente con manejo de errores
-// client.initialize()
-//     .then(() => {
-//         console.log('🔄 Cliente inicializado, esperando conexión...');
-//     })
-//     .catch(err => {
-//         console.error('❌ Error al inicializar cliente:', err);
-//     });
-
-// module.exports = app;
-
-// const express = require('express');
-// const cors = require('cors');
-// const path = require('path');
-// const app = express();
-// const respuestas = require('../src/config/msg.json');
-// const natural = require('natural');
-// const tokenizer = new natural.WordTokenizer();
-
-// app.use(express.json());
-// app.set("json spaces", 4);
-// const corsOptions = {
-//     origin: "*",
-//     optionsSuccessStatus: 200
-// };
-// app.use(cors(corsOptions));
-
-// const qrcode = require('qrcode-terminal');
-
-// //Crea una sesión con whatsapp-web y la guarda localmente para autenticarse solo una vez por QR
-// const { Client, LocalAuth } = require('whatsapp-web.js');
-// const client = new Client({
-//     authStrategy: new LocalAuth({
-//         dataPath: './wwebjs_auth'
-//     }),
-//     puppeteer: {
-//         headless: true,
-//         args: [
-//             '--no-sandbox',
-//             '--disable-setuid-sandbox',
-//             '--disable-dev-shm-usage',
-//             '--disable-accelerated-2d-canvas',
-//             '--no-first-run',
-//             '--no-zygote',
-//             '--single-process',
-//             '--disable-gpu'
-//         ]
-//     }
-// });
-
-// //Genera el código qr para conectarse a whatsapp-web
-// client.on('qr', qr => {
-//     console.log('\n' + '='.repeat(50));
-//     console.log('🚀 ESCANEA ESTE CÓDIGO QR CON TU TELÉFONO:');
-//     console.log('='.repeat(50));
-//     qrcode.generate(qr, {small: true});
-//     console.log('='.repeat(50));
-//     console.log('📱 Abre WhatsApp > Dispositivos vinculados > Vincular dispositivo');
-//     console.log('⏳ Una vez escaneado, verás "Conexión exitosa" aquí');
-//     console.log('='.repeat(50) + '\n');
-// });
-
-// //Si la conexión es exitosa muestra el mensaje de conexión exitosa
-// client.on('ready', () => {
-//     console.log('\n' + '🎉'.repeat(20));
-//     console.log('✅ ¡CONEXIÓN EXITOSA CON WHATSAPP!');
-//     console.log('🤖 El bot está listo para recibir mensajes');
-//     console.log('🎉'.repeat(20) + '\n');
-// });
-
-// // Manejo de errores adicionales
-// client.on('auth_failure', msg => {
-//     console.error('❌ Error de autenticación:', msg);
-//     console.log('💡 Intenta eliminar la carpeta .wwebjs_auth y volver a escanear el QR');
-// });
-
-// client.on('disconnected', (reason) => {
-//     console.log('⚠️ Cliente desconectado:', reason);
-//     console.log('🔄 Intentando reconectar...');
-// });
-
-// // Objeto para mantener un registro de las opciones del usuario
-// const opcionesUsuario = {};
-
-// // Escuchar TODOS los mensajes (incluso los propios)
-// client.on('message_create', message => {
-//     // DEBUG BÁSICO: Verificar si llegan mensajes
-//     console.log('\n🚨 ¡MENSAJE DETECTADO CON message_create! 🚨');
-    
-//     // DEBUG: Mostrar información del mensaje
-//     console.log('\n' + '🔍'.repeat(30));
-//     console.log('📩 MENSAJE RECIBIDO:');
-//     console.log('💬 Contenido:', message.body);
-//     console.log('👤 De:', message.from);
-//     console.log('📍 Es grupo:', message.isGroupMsg);
-//     console.log('🤖 Es del bot:', message.fromMe);
-//     console.log('🔍'.repeat(30));
-
-//     // ⚠️ COMENTADO PARA TESTING - Ignorar mensajes enviados por el bot mismo
-//     // IMPORTANTE: Descomenta esto cuando termines las pruebas para evitar loops infinitos
-//     // if (message.fromMe) {
-//     //     console.log('⏭️ Ignorando mensaje propio del bot');
-//     //     return;
-//     // }
-
-//     // SOLO responder a mensajes DIRECTOS (NO grupos)
-//     if (!message.isGroupMsg && message.body && message.body.trim() !== '') {
-//         console.log('💬 Procesando mensaje directo (no es grupo)');
-        
-//         // Convertir el texto del mensaje a minúsculas
-//         const mensajeEnMinusculas = message.body.toLowerCase().trim();
-//         console.log('🔤 Mensaje procesado:', mensajeEnMinusculas);
-
-//         // Tokenizar el mensaje en palabras individuales
-//         const palabrasMensaje = tokenizer.tokenize(mensajeEnMinusculas);
-//         console.log('🔤 Palabras encontradas:', palabrasMensaje);
-
-//         let respuestaEncontrada = false;
-
-//         for (let i = 0; i < respuestas.length; i++) {
-//             const claveRespuesta = respuestas[i].clave.toLowerCase();
-//             console.log(`🔍 Comparando con clave: "${claveRespuesta}"`);
-
-//             // Verificar si alguna palabra clave coincide con alguna palabra del mensaje
-//             const coincidencia = palabrasMensaje.some(palabra => claveRespuesta.includes(palabra));
-            
-//             if (coincidencia) {
-//                 console.log(`✅ ¡COINCIDENCIA ENCONTRADA con: "${claveRespuesta}"!`);
-//                 let respuesta = respuestas[i].respuesta;
-
-//                 // Si existen opciones, añádelas a la respuesta y al registro de opciones del usuario
-//                 if (respuestas[i].opciones) {
-//                     respuesta += '\n';
-//                     for (let j = 0; j < respuestas[i].opciones.length; j++) {
-//                         respuesta += `${j + 1}. ${respuestas[i].opciones[j].texto}\n`;
-//                     }
-//                     opcionesUsuario[message.from] = respuestas[i].opciones;
-//                 }
-
-//                 console.log('🤖 Preparando respuesta:', respuesta);
-
-//                 // Envío de respuesta después de un retraso de 3 segundos
-//                 setTimeout(() => {
-//                     client.sendMessage(message.from, respuesta)
-//                         .then(() => {
-//                             console.log('✅ ¡Mensaje enviado correctamente!');
-//                         })
-//                         .catch(err => {
-//                             console.error('❌ Error al enviar mensaje:', err);
-//                         });
-//                 }, 3000);
-                
-//                 respuestaEncontrada = true;
-//                 break;
-//             }
-//         }
-
-//         if (!respuestaEncontrada) {
-//             console.log('❌ No se encontró ninguna coincidencia para el mensaje');
-//         }
-//     } else if (message.isGroupMsg) {
-//         console.log('⏭️ Ignorando mensaje de grupo');
-//     }
-// });
-
-// // Inicializar el cliente con manejo de errores
-// client.initialize()
-//     .then(() => {
-//         console.log('🔄 Cliente inicializado, esperando conexión...');
-//     })
-//     .catch(err => {
-//         console.error('❌ Error al inicializar cliente:', err);
-//     });
-
-// module.exports = app;
